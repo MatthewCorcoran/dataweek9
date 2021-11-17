@@ -15,6 +15,8 @@ next();
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
+global.TextEncoder = require("util").TextEncoder;
+global.TextDecoder = require("util").TextDecoder;
 
 // parse application/json
 app.use(bodyParser.json())
@@ -74,7 +76,18 @@ app.get('/api/movies', (req, res) => {
 })
 
 
+app.put('/api/movies/:id', (req, res)=>{
+    console.log('Updating: '+req.params.id)
+    
+    movieModel.findByIdAndUpdate(req.params.id, req.body, {new:true},
+    (err, data)=>{
+    res.json(data);
+    })
+   })
+
+
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })
+
